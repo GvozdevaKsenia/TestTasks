@@ -1,7 +1,7 @@
 ﻿#include <iostream>
 #include <fstream>
 #include <string>
-#include <vector>
+#include <unordered_map>
 using namespace std;
 
 /*Дядя Сэм решил оптимизировать свою пасеку и сократить количество ульев,
@@ -22,38 +22,41 @@ public:
 
 		vector<int> vec;
 		int numbersofBees;
-
+		const int TARGET = 2023;
 		ifstream fileInput;
 		fileInput.open(filename);
 
-		if (fileInput.is_open()) 
+		if (fileInput.is_open())
 		{
 			while (fileInput >> numbersofBees) {
 				vec.push_back(numbersofBees);
 			}
-			for (int i = 0; i < vec.size(); i++) {
-				for (int j = 1; j < vec.size() - 1; j++) {
-					int result = vec[i] + vec[j];
-					if (result == 2023 ) {
-						cout <<vec[i]<< " - " << vec[j] << endl;
-						i = vec.size();
-						break;
-					}	
+			unordered_map<int, int> map;
+
+			for (int i = 0; i < vec.size(); i++)
+			{
+				if (map.find(TARGET - vec[i]) != map.end())
+				{
+					cout << "Pair found (" << vec[map[TARGET - vec[i]]] << ", "
+						<< vec[i] << ")\n";
+					return;
 				}
+				map[vec[i]] = i;
 			}
+			cout << "Pair not found!" << endl;
 		}
-		else 
+		else
 		{
 			cout << "Ошибка открытия файла!";
 		}
 		fileInput.close();
 	}
-    
+
 };
 
 int main()
 {
-	cout << "Uncle Sam! I can help you!"<<endl;
+	cout << "Uncle Sam! I can help you!" << endl;
 	string filename = "Input task1.txt";
 	HiveofSam hive = HiveofSam(filename);
 	hive.FileFunction();
