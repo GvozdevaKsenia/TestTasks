@@ -47,7 +47,7 @@ public:
 		}
 		else
 		{
-			cout << "Ошибка открытия файла!";
+			cout << "Error of opening file!";
 		}
 		fileInput.close();
 	}
